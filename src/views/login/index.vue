@@ -61,9 +61,8 @@ export default {
   watch: {},
   created () {},
   mounted () {},
-  
   methods: {
-    
+
     async onLogin () {
       this.$toast.loading({
         message: '登录中...', // 提示文本
@@ -74,18 +73,20 @@ export default {
       // 2. 封装请求方法
       // 3. 请求调用登录
       try {
-        const { data } = await login(this.user)
+        // const { data } = await login(this.user)
 
         // 4. 处理响应结果
         this.$toast.success('登录成功')
+        // +
 
         // 将后端返回的用户登录状态（token等数据）放到 Vuex 容器中
-    +    this.$store.commit('setUser', data.data)
+        // this.$store.commit('setUser', data.data)
       } catch (err) {
         console.log(err)
         this.$toast.fail('登录失败，手机号或验证码错误')
       }
     }
+  }
 }
 </script>
 

@@ -14,13 +14,11 @@
           round
           fit="cover"
           src="https://img.yzcdn.cn/vant/cat.jpeg"
+          v-if="user"
         />
-        <div class="name" slot="title">昵称</div>
-        <van-button
-          class="update-btn"
-          size="small"
-          round
-        >编辑资料</van-button>
+        <div class="name" slot="title" v-if="!user" >未登录</div>
+        <div class="name" slot="title" v-if="user">{{user}}</div>
+        <van-button round>编辑资料</van-button>
       </van-cell>
       <van-grid class="data-info" :border="false">
         <van-grid-item class="data-info-item">
@@ -50,11 +48,8 @@
       </van-grid>
     </van-cell-group>
 
-    <div class="not-login">
-      <div @click="$router.push('/login')">
-        <img class="mobile" src="https://img.yzcdn.cn/vant/cat.jpeg">
-      </div>
-      <div class="text">登录 / 注册</div>
+    <div class="not-login" v-if="!user">
+      <div class="text" @click="$router.push('/login')">登录 / 注册</div>
     </div>
 
     <van-grid class="nav-grid mb-4" :column-num="2">
@@ -73,7 +68,7 @@
     </van-grid>
 
     <van-cell title="消息通知" is-link to="/" />
-    <van-cell class="mb-4" title="小智同学" is-link to="/" />
+
     <van-cell
       v-if="user"
       class="logout-cell"
@@ -81,34 +76,47 @@
       @click="onLogout"
     />
   </div>
+
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
+
 export default {
   name: 'MyIndex',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      //username : ''
+    }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   watch: {},
-  created () {},
+  created () {
+      //this.username = this.user
+  },
   mounted () {},
   methods: {
+    loadCurrentUser () {
+      this.username = 666
+    },
     onLogout () {
       // 提示用户确认退出
       // 确认 -> 处理退出
+
       this.$dialog.confirm({
         title: '退出提示',
         message: '确认退出吗？'
       })
         .then(() => { // 确认执行这里
-        // 清除用户登录状态
+          // 清除用户登录状态
           this.$store.commit('setUser', null)
         })
         .catch(() => { // 退出执行这里
-        // on cancel
         })
     }
   }
@@ -121,7 +129,7 @@ export default {
     .base-info {
       box-sizing: border-box;
       height: 115px;
-      background-color: unset;
+      background-color: slateblue;
       padding-top: 38px;
       padding-bottom: 11px;
       .avatar {
@@ -144,7 +152,7 @@ export default {
     .data-info {
       .data-info-item {
         height: 65px;
-        color: #fff;
+        color: #00007f;
         .text-wrap {
           display: flex;
           flex-direction: column;
@@ -176,7 +184,7 @@ export default {
     }
     .text {
       font-size: 14px;
-      color: #fff;
+      color: #55007f;
     }
   }
 

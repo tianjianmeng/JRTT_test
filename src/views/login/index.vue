@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 export default {
   name: 'LoginIndex',
   components: {},
@@ -40,10 +39,6 @@ export default {
   created () {},
   mounted () {},
   methods: {
-    ...mapMutations([
-      'setUser'
-    ]),
-
     onLogin () {
       this.$toast.loading({
         message: '登录中...', // 提示文本
@@ -52,7 +47,7 @@ export default {
       })
       try {
         this.$toast.success('登录成功')
-        this.setUser(this.user.mobile)
+        this.$store.commit('setUser', this.user.mobile)
         this.$router.push('/my')
       } catch (err) {
         console.log(err)
